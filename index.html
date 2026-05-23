@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SpindleWatch | Operations Console</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <h1>SpindleWatch</h1>
+          <p>Line 04 / RS-485 control network</p>
+        </div>
+      </div>
+      <div class="status-controls">
+        <span class="live-pill"><span class="pulse"></span> Live</span>
+        <button id="pauseButton" class="icon-button" type="button" title="Pause event stream" aria-label="Pause event stream">
+          <span id="pauseIcon" aria-hidden="true">||</span>
+        </button>
+        <button id="resetButton" class="icon-button" type="button" title="Reset simulation" aria-label="Reset simulation">
+          <span aria-hidden="true">&#8635;</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="metrics" aria-label="Line performance metrics">
+        <article class="metric">
+          <p class="label">Monitored spindles</p>
+          <p class="value">10,608</p>
+          <p class="detail healthy">48 nodes online</p>
+        </article>
+        <article class="metric">
+          <p class="label">Active alarms</p>
+          <p id="alarmValue" class="value">0</p>
+          <p id="alarmDetail" class="detail">No open breaks</p>
+        </article>
+        <article class="metric">
+          <p class="label">Median latency</p>
+          <p id="latencyValue" class="value">-- ms</p>
+          <p class="detail healthy">Target &lt; 300 ms</p>
+        </article>
+        <article class="metric">
+          <p class="label">Availability</p>
+          <p id="availabilityValue" class="value">100.00%</p>
+          <p id="downtimeDetail" class="detail healthy">0 spindle-min downtime</p>
+        </article>
+      </section>
+
+      <section class="workspace">
+        <div class="trend-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Breakage Rate</h2>
+              <p>Events per scan cycle</p>
+            </div>
+            <select id="windowSelector" aria-label="Trend time window">
+              <option value="30">30 cycles</option>
+              <option value="60" selected>60 cycles</option>
+              <option value="120">120 cycles</option>
+            </select>
+          </div>
+          <canvas id="trendChart" width="900" height="300" aria-label="Rolling breakage trend chart"></canvas>
+        </div>
+
+        <div class="network-panel">
+          <div class="panel-head">
+            <div>
+              <h2>RS-485 Nodes</h2>
+              <p>48 segments / 221 spindles each</p>
+            </div>
+            <div class="legend">
+              <span class="online">Online</span><span class="alert">Alert</span>
+            </div>
+          </div>
+          <div id="nodeGrid" class="node-grid" aria-label="Network segment statuses"></div>
+        </div>
+      </section>
+
+      <section class="events-panel">
+        <div class="panel-head events-head">
+          <div>
+            <h2>Downtime Events</h2>
+            <p>Latest acknowledgements from the distribution bus</p>
+          </div>
+          <label class="toggle">
+            <input id="alertsOnly" type="checkbox">
+            <span>Open alarms only</span>
+          </label>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Node</th>
+                <th>Spindle</th>
+                <th>State</th>
+                <th>Latency</th>
+              </tr>
+            </thead>
+            <tbody id="eventRows"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
